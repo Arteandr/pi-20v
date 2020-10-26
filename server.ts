@@ -1,12 +1,29 @@
-import express from 'express'
-import dotenv from 'dotenv'
+import express, { Application } from 'express';
+import dotenv from 'dotenv';
+/** CONFIGURE DOTENV */
+dotenv.config();
 
-const app = express()
+/** DATABASE(DB) */
+import './core/db';
 
-dotenv.config()
+/** VALIDATION */
+import { registerValidations } from './validations/register';
 
-app.get('/users', (): void => {})
+/** CONTROLLERS */
+import { UserCtrl } from './controllers/UserController';
+
+/** CREATE APP INSTANCE */
+const app: Application = express();
+
+/* MIDDLEWARES */
+app.use(express.json());
+
+/* ROUTES */
+app.get('/users', UserCtrl.index);
+app.post('/users', registerValidations, UserCtrl.create);
+//app.get('users', UserCtrl.create);
+//app.get('users', UserCtrl.create);
 
 app.listen(8888, (): void => {
-    console.log('Server running')
-})
+    console.log('Server running');
+});
