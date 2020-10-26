@@ -22,5 +22,8 @@
     "start": "node dist/server.js",
     "dev": "ts-node server.ts",
     "nodemon": "nodemon"
+  },
+  "devDependencies": {
+    "prettier": "2.1.2"
   }
 }
