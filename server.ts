@@ -21,7 +21,7 @@ app.use(express.json());
 /* ROUTES */
 app.get('/users', UserCtrl.index);
 app.post('/users', registerValidations, UserCtrl.create);
-//app.get('users', UserCtrl.create);
+app.get('/users/:id', UserCtrl.show);
 //app.get('users', UserCtrl.create);
 
 app.listen(8888, (): void => {

@@ -40,4 +40,11 @@ const UserSchema = new Schema<IUserModel>({
     },
 });
 
+UserSchema.set('toJSON', {
+    transform: (_, obj) => {
+        delete obj.password;
+        return obj;
+    },
+});
+
 export const UserModel = model<IUserModelDocument>('User', UserSchema);
