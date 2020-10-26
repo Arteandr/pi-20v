@@ -1,7 +1,18 @@
-import { model, Schema } from 'mongoose';
+import { model, Schema, Document } from 'mongoose';
+
+interface IUserModel {
+    username: string;
+    firstName: string;
+    lastName: string;
+    subgroup: number;
+    completedTasks: Array<number>;
+    confirmedHash: string;
+}
+
+type IUserModelDocument = IUserModel & Document;
 
 /* User model schema */
-const UserSchema = new Schema({
+const UserSchema = new Schema<IUserModel>({
     username: {
         unique: true,
         required: true,
@@ -16,16 +27,16 @@ const UserSchema = new Schema({
         type: String,
     },
     subgroup: {
-        required: true,
+        required: false,
         type: Number,
     },
     completedTasks: {
-        type: String,
+        type: Array,
     },
-    confirmed_hash: {
+    confirmedHash: {
         required: true,
         type: String,
     },
 });
 
-export const UserModel = model('User', UserSchema);
+export const UserModel = model<IUserModelDocument>('User', UserSchema);

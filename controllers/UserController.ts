@@ -38,7 +38,7 @@ class UserController {
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 password: req.body.password,
-                confirm_hash: generateMD5(
+                confirmedHash: generateMD5(
                     process.env.SECRET_KEY || Math.random().toString()
                 ),
             };

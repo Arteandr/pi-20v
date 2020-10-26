@@ -6,11 +6,11 @@ dotenv.config();
 /** DATABASE(DB) */
 import './core/db';
 
-/** VALIDATION */
-import { registerValidations } from './validations/register';
-
 /** CONTROLLERS */
 import { UserCtrl } from './controllers/UserController';
+
+/** VALIDATION */
+import { registerValidations } from './validations/register';
 
 /** CREATE APP INSTANCE */
 const app: Application = express();
