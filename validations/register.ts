@@ -38,4 +38,13 @@ export const registerValidations = [
                 return value;
             }
         }),
+    body('subgroup', 'Укажите подгруппу')
+        .isNumeric()
+        .custom((value) => {
+            if (value !== 1 && value !== 2) {
+                throw new Error('Укажите подгруппу (1,2)');
+            } else {
+                return value;
+            }
+        }),
 ];

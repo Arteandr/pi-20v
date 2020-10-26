@@ -1,12 +1,12 @@
 import { model, Schema, Document } from 'mongoose';
 
-interface IUserModel {
+export interface IUserModel {
     username: string;
     firstName: string;
     lastName: string;
+    password: string;
     subgroup: number;
     completedTasks: Array<number>;
-    confirmedHash: string;
 }
 
 type IUserModelDocument = IUserModel & Document;
@@ -26,16 +26,17 @@ const UserSchema = new Schema<IUserModel>({
         required: true,
         type: String,
     },
+    password: {
+        required: true,
+        type: String,
+    },
     subgroup: {
-        required: false,
+        required: true,
         type: Number,
     },
     completedTasks: {
+        required: false,
         type: Array,
-    },
-    confirmedHash: {
-        required: true,
-        type: String,
     },
 });
 

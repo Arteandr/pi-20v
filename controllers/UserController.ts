@@ -1,7 +1,6 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
-import { UserModel } from '../models/UserModel';
-import { generateMD5 } from '../utils/generateHash';
+import { IUserModel, UserModel } from '../models/UserModel';
 
 class UserController {
     /* Get all users */
@@ -33,14 +32,13 @@ class UserController {
                 return;
             }
 
-            const data = {
+            const data: IUserModel = {
                 username: req.body.username,
                 firstName: req.body.firstName,
                 lastName: req.body.lastName,
                 password: req.body.password,
-                confirmedHash: generateMD5(
-                    process.env.SECRET_KEY || Math.random().toString()
-                ),
+                completedTasks: [],
+                subgroup: req.body.subgroup,
             };
 
             const user = await UserModel.create(data);
