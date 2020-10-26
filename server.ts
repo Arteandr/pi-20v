@@ -1,15 +1,12 @@
-import express from "express";
-import dotenv from "dotenv";
+import express from 'express'
+import dotenv from 'dotenv'
 
-const app = express();
+const app = express()
 
-dotenv.config();
+dotenv.config()
 
-app.get('/users',():void => {});
+app.get('/users', (): void => {})
 
-
-app.listen(8888,():void => {
-    console.log('Server running');
-    
+app.listen(8888, (): void => {
+    console.log('Server running')
 })
-

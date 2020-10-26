@@ -3,7 +3,7 @@ import { UserModel } from '../models/UserModel';
 
 class UserController {
     /* Get all users */
-    async index(_: any, res: express.Response) : Promise<void> {
+    async index(_: any, res: express.Response): Promise<void> {
         try {
             const users = await UserModel.find({}).exec();
 
@@ -17,15 +17,11 @@ class UserController {
                 message: JSON.stringify(error),
             });
         }
-
     }
-    
-    async create(req: express.Request, res: express.Response) : Promise<void> {
+
+    async create(req: express.Request, res: express.Response): Promise<void> {
         try {
-            
-        } catch (error) {
-            
-        }
+        } catch (error) {}
     }
 }
 

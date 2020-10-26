@@ -21,7 +21,8 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "ts-node server.ts",
-    "nodemon": "nodemon"
+    "nodemon": "nodemon",
+    "prettier-watch": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
   },
   "devDependencies": {
     "prettier": "2.1.2"
