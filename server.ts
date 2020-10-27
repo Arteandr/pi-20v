@@ -1,5 +1,5 @@
 /**---------------------------------IMPORTS---------------------------------*/
-                                /** Basic */    
+                                /** Express */    
 import express, { Application } from 'express';
 
                     /** Dotenv import and configuring */
@@ -13,10 +13,12 @@ import './core/db';
 import { passport } from './core/passport';
 
 /**---------------------------------CONTROLLERS---------------------------------*/
-import { UserCtrl } from './controllers/UserController'; // User Controller
+import { UserCtrl } from './controllers/UserController';    // User Controller
+import { TaskCtrl } from './controllers/TaskController';    // Task Controller
 
 /**---------------------------------VALIDATIONS---------------------------------*/
 import { registerValidations } from './validations/register';
+import { createTaskValidations } from './validations/createTask';
 
 
 const app: Application = express(); // Create app instance
@@ -27,16 +29,19 @@ app.use(passport.initialize()); // auth initialize
 
 /*---------------------------------ROUTES---------------------------------*/
                                 /** Users */
-app.get('/users', UserCtrl.index);
-app.get('/users/me', passport.authenticate('jwt', {session: false}), UserCtrl.getUserInfo);
-app.get('/users/:id', UserCtrl.show);
+app.get('/users', UserCtrl.index);  // Get all users
+app.get('/users/me', passport.authenticate('jwt', {session: false}), UserCtrl.getUserInfo); // Get current user
+app.get('/users/:id', UserCtrl.show);   //  Get user by id
                                 /** Auth */
-app.post('/auth/register', registerValidations, UserCtrl.create);
-app.post('/auth/login', passport.authenticate('local'), UserCtrl.afterLogin);
+app.post('/auth/register', registerValidations, UserCtrl.create);   // SignUp
+app.post('/auth/login', passport.authenticate('local'), UserCtrl.afterLogin);   // SignIn
                                 /** Task */
+app.get('/tasks',TaskCtrl.index);   // Get all tasks
+app.get('/tasks/:id', TaskCtrl.show);   // Get task by id
+app.delete('/tasks/:id', passport.authenticate('jwt'), TaskCtrl.delete);  // Delete task by id
+app.post('/tasks', passport.authenticate('jwt'),createTaskValidations, TaskCtrl.create); // Create new task
 
-
-                                /** SERVER START */
+                            /** SERVER START */
 app.listen(8888, (): void => {
     console.log('Server running');
     

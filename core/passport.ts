@@ -31,12 +31,11 @@ passport.use(
             secretOrKey: process.env.SECRET_KEY,
             jwtFromRequest: ExtractJwt.fromHeader('token'),
         },
-        async (payload: {data: IUserModel}, done) => {
+        async (payload: {data: IUserModel}, done): Promise<void> => {
             try {
                 const user = await UserModel.findById(payload.data._id).exec();
-                console.log(user);
                 if(user){
-                     done(null,user);
+                    return done(null,user);
                 }
                 done(null,false);
             } catch (error) {

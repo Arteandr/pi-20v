@@ -1,13 +1,10 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 
 import { generateMD5 } from '../utils/generateHash';
 import { validationResult } from 'express-validator';
 import { IUserModel, IUserModelDocument, UserModel } from '../models/UserModel';
-
-const isValidObjectId = mongoose.Types.ObjectId.isValid;
-
+import { isValidObjectId } from '../utils/isValidObjectId';
 class UserController {
     /* Get all users */
     async index(_: any, res: express.Response): Promise<void> {
