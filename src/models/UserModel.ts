@@ -1,7 +1,7 @@
-import { model, Schema, Document } from 'mongoose';
+import { model, Schema, Document, Model } from 'mongoose';
+import bcrypt from 'bcrypt';
 
-export interface IUserModel {
-    _id?: string;
+export interface IUser {
     username: string;
     firstName: string;
     lastName: string;
@@ -10,7 +10,9 @@ export interface IUserModel {
     completedTasks: Array<number>;
 }
 
-export type IUserModelDocument = IUserModel & Document;
+export interface IUserModel extends IUser, Document {
+    comparePassword(candidatePassword: string): Promise<boolean>;
+}
 
 /* User model schema */
 const UserSchema = new Schema<IUserModel>({
@@ -48,4 +50,22 @@ UserSchema.set('toJSON', {
     },
 });
 
-export const UserModel = model<IUserModelDocument>('User', UserSchema);
+UserSchema.pre<IUserModel>('save', function (next) {
+    var user = this;
+
+    if (!user.isModified('password')) return next();
+    bcrypt.genSalt(10, (err, salt) => {
+        if (err) return next(err);
+        bcrypt.hash(user.password, salt, (err, hash) => {
+            if (err) return next(err);
+            user.password = hash;
+            next();
+        });
+    });
+});
+
+UserSchema.methods.comparePassword = async function (candidatePassword) {
+    return await bcrypt.compare(candidatePassword, this.password);
+};
+
+export const UserModel = model<IUserModel>('User', UserSchema);

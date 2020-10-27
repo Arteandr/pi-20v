@@ -1,9 +1,8 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 
-import { generateMD5 } from '../utils/generateHash';
 import { validationResult } from 'express-validator';
-import { IUserModel, IUserModelDocument, UserModel } from '../models/UserModel';
+import { IUser, IUserModel, UserModel } from '../models/UserModel';
 import { isValidObjectId } from '../utils/isValidObjectId';
 class UserController {
     /* Get all users */
@@ -64,15 +63,9 @@ class UserController {
                 return;
             }
 
-            const data: IUserModel = {
-                username: req.body.username,
-                firstName: req.body.firstName,
-                lastName: req.body.lastName,
-                password: generateMD5(
-                    req.body.password + process.env.SECRET_KEY
-                ),
+            const data: IUser = {
                 completedTasks: [],
-                subgroup: req.body.subgroup,
+                ...req.body,
             };
 
             const user = await UserModel.create(data);
@@ -96,7 +89,7 @@ class UserController {
     ): Promise<void> {
         try {
             const user = req.user
-                ? (req.user as IUserModelDocument).toJSON()
+                ? (req.user as IUserModel).toJSON()
                 : undefined;
             res.json({
                 status: 'success',
@@ -125,7 +118,7 @@ class UserController {
     ): Promise<void> {
         try {
             const user = req.user
-                ? (req.user as IUserModelDocument).toJSON()
+                ? (req.user as IUserModel).toJSON()
                 : undefined;
 
             res.json({
