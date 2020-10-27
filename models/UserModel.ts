@@ -1,6 +1,7 @@
 import { model, Schema, Document } from 'mongoose';
 
 export interface IUserModel {
+    _id?: string;
     username: string;
     firstName: string;
     lastName: string;
@@ -9,7 +10,7 @@ export interface IUserModel {
     completedTasks: Array<number>;
 }
 
-type IUserModelDocument = IUserModel & Document;
+export type IUserModelDocument = IUserModel & Document;
 
 /* User model schema */
 const UserSchema = new Schema<IUserModel>({

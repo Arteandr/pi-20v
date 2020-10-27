@@ -1,8 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import jwt from 'jsonwebtoken';
+
 import { generateMD5 } from '../utils/generateHash';
 import { validationResult } from 'express-validator';
-import { IUserModel, UserModel } from '../models/UserModel';
+import { IUserModel, IUserModelDocument, UserModel } from '../models/UserModel';
 
 const isValidObjectId = mongoose.Types.ObjectId.isValid;
 
@@ -86,6 +88,57 @@ class UserController {
             res.json({
                 status: 'error',
                 message: JSON.stringify(error),
+            });
+        }
+    }
+
+    /* Login user */
+    async afterLogin(
+        req: express.Request,
+        res: express.Response
+    ): Promise<void> {
+        try {
+            const user = req.user
+                ? (req.user as IUserModelDocument).toJSON()
+                : undefined;
+            res.json({
+                status: 'success',
+                data: {
+                    ...user,
+                    token: jwt.sign(
+                        { data: req.user },
+                        process.env.SECRET_KEY,
+                        {
+                            expiresIn: '30d',
+                        }
+                    ),
+                },
+            });
+        } catch (error) {
+            res.status(500).json({
+                status: 'error',
+                message: error,
+            });
+        }
+    }
+
+    async getUserInfo(
+        req: express.Request,
+        res: express.Response
+    ): Promise<void> {
+        try {
+            const user = req.user
+                ? (req.user as IUserModelDocument).toJSON()
+                : undefined;
+
+            res.json({
+                status: 'success',
+                data: user,
+            });
+        } catch (error) {
+            res.status(500).json({
+                status: 'error',
+                message: error,
             });
         }
     }
