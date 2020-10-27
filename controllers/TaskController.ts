@@ -15,7 +15,7 @@ class TaskController {
                 data: tasks,
             });
         } catch (error) {
-            res.json({
+            res.status(500).json({
                 status: 'error',
                 message: JSON.stringify(error),
             });

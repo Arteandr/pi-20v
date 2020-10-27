@@ -16,7 +16,7 @@ class UserController {
                 data: users,
             });
         } catch (error) {
-            res.json({
+            res.status(500).json({
                 status: 'error',
                 message: JSON.stringify(error),
             });
@@ -82,7 +82,7 @@ class UserController {
                 data: user,
             });
         } catch (error) {
-            res.json({
+            res.status(500).json({
                 status: 'error',
                 message: JSON.stringify(error),
             });
