@@ -29,11 +29,18 @@
     },
     "scripts": {
         "start": "node dist/server.js",
-        "dev": "ts-node server.ts",
+        "dev": "ts-node ./src/server.ts",
         "nodemon": "nodemon",
-        "prettier-watch": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}"
+        "prettier-watch": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}",
+        "test": "jest"
     },
     "devDependencies": {
-        "prettier": "2.1.2"
+        "@shelf/jest-mongodb": "^1.2.3",
+        "@types/jest": "^26.0.15",
+        "@types/supertest": "^2.0.10",
+        "jest": "^26.6.1",
+        "prettier": "2.1.2",
+        "supertest": "^5.0.0",
+        "ts-jest": "^26.4.3"
     }
 }
