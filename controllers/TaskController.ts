@@ -120,6 +120,38 @@ class TaskController {
           });
       }
     }
+
+    /** Update task */
+    async update(req: express.Request, res: express.Response): Promise<void> {
+      const user = req.user as IUserModel;
+
+      try {
+          if(user){
+          const taskId = req.params.id;
+
+          if(!isValidObjectId(taskId)){
+              res.status(400).send();
+              return
+          }
+
+          const task = await TaskModel.findById(taskId);
+
+          if(task){
+              const text = req.body.text;
+              task.text = text;
+              task.save();
+              res.send();
+          }else{
+              res.status(404).send();
+          };
+        };
+      } catch (error) {
+          res.status(500).json({
+              status: 'error',
+              message: error,
+          });
+      }
+    }
 }
 
 export const TaskCtrl = new TaskController();

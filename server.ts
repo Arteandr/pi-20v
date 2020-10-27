@@ -39,7 +39,10 @@ app.post('/auth/login', passport.authenticate('local'), UserCtrl.afterLogin);   
 app.get('/tasks',TaskCtrl.index);   // Get all tasks
 app.get('/tasks/:id', TaskCtrl.show);   // Get task by id
 app.delete('/tasks/:id', passport.authenticate('jwt'), TaskCtrl.delete);  // Delete task by id
+app.patch('/tasks/:id', passport.authenticate('jwt'),createTaskValidations, TaskCtrl.update); // Update task by id
 app.post('/tasks', passport.authenticate('jwt'),createTaskValidations, TaskCtrl.create); // Create new task
+
+
 
                             /** SERVER START */
 app.listen(8888, (): void => {
