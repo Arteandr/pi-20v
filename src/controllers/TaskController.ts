@@ -72,7 +72,8 @@ class TaskController {
                     user: user._id,
                     startDate: req.body.startDate,
                     endDate: req.body.endDate,
-                    subject: req.body.subject ? req.body.subject : 0,
+                    subject: req.body.subject,
+                    subgroup: req.body.subgroup ? req.body.subgroup : 0,
                 };
 
                 const task = await TaskModel.create(data);
