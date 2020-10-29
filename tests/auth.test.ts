@@ -26,35 +26,47 @@ afterAll(async () => {
     mongoose.connection.close();
 });
 
-test('User can succesfully register', async (done) => {
-    const response = await request.post('/auth/register').send({
-        username: 'testuser',
-        firstName: 'Ivan',
-        lastName: 'Ivanov',
-        password: 'qwerty12345',
-        subgroup: 1,
-    });
-    expect(response.status).toBe(200);
-    expect(response.body.status).toBe('success');
-    done();
-});
+const authData = {
+    username: 'testuser',
+    password: 'qwerty12345',
+};
 
-test('User can succesfully login', async (done) => {
-    const response = await request.post('/auth/login').send({
-        username: 'testuser',
-        password: 'qwerty12345',
-    });
-    expect(response.status).toBe(200);
-    expect(response.body.status).toBe('success');
-    done();
-});
+const invalidAuthData = {
+    username: 'testuser',
+    password: 'incorrectpassword',
+};
 
-test('User gets 401 on invalid credentials', async (done) => {
-    const response = await request.post('/auth/login').send({
-        username: 'testuser',
-        password: 'incorrect password',
-    });
-    expect(response.status).toBe(401);
-    done();
-});
+const registerData = {
+    firstName: 'Ivan',
+    lastName: 'Ivanov',
+    subgroup: 1,
+    ...authData,
+};
 
+describe('Registration', () => {
+    test('User can succesfully register', async () => {
+        const response = await request
+            .post('/auth/register')
+            .send(registerData);
+        expect(response.status).toBe(200);
+        expect(response.body.status).toBe('success');
+    });
+    test('User can`n register with incorrect data', async () => {
+        const response = await request.post('/auth/register').send({});
+        expect(response.status).toBe(400);
+        expect(response.body.status).toBe('error');
+    });
+});
+describe('Authorization', () => {
+    test('User can succesfully login', async () => {
+        const response = await request.post('/auth/login').send(authData);
+        expect(response.status).toBe(200);
+        expect(response.body.status).toBe('success');
+    });
+    test('User gets 401 on invalid credentials', async () => {
+        const response = await request
+            .post('/auth/login')
+            .send(invalidAuthData);
+        expect(response.status).toBe(401);
+    });
+});
