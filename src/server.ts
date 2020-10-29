@@ -5,7 +5,8 @@ import express, { Application } from 'express';
 /** Dotenv import and configuring */
 import dotenv from 'dotenv';
 dotenv.config();
-
+/** CORS */
+import cors from 'cors'
 /** DATABASE(DB) */
 import initDB from './core/db';
 /** Auth */
@@ -24,6 +25,7 @@ const app: Application = express(); // Create app instance
 /**---------------------------------MIDDLEWARES---------------------------------*/
 app.use(express.json()); // json body parser
 app.use(passport.initialize()); // auth initialize
+app.use(cors()) // use cors 
 
 /*---------------------------------ROUTES---------------------------------*/
 /** Users */

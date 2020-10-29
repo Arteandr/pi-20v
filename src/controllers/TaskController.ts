@@ -72,7 +72,7 @@ class TaskController {
                     user: user._id,
                     startDate: req.body.startDate,
                     endDate: req.body.endDate,
-                    subject: req.body.subject,
+                    subject: req.body.subject ? req.body.subject : 0,
                 };
 
                 const task = await TaskModel.create(data);
