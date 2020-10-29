@@ -15,10 +15,12 @@ import { passport } from './core/passport';
 /**---------------------------------CONTROLLERS---------------------------------*/
 import { UserCtrl } from './controllers/UserController'; // User Controller
 import { TaskCtrl } from './controllers/TaskController'; // Task Controller
+import { ContactCtrl } from './controllers/ContactController'; // Contact Controller
 
 /**---------------------------------VALIDATIONS---------------------------------*/
 import { registerValidations } from './validations/register';
 import { createTaskValidations } from './validations/createTask';
+import { createContactValidations } from './validations/createContact'
 
 const app: Application = express(); // Create app instance
 
@@ -55,7 +57,14 @@ app.post(
     createTaskValidations,
     TaskCtrl.create
 ); // Create new task
-
+/** Contacts */
+app.get('/contacts', ContactCtrl.index);
+app.post(
+    '/contacts',
+    passport.authenticate('jwt'),
+    createContactValidations,
+    ContactCtrl.create 
+    );
 /** SERVER START */
 const start = async () => {
     try {
