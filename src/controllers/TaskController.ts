@@ -12,7 +12,7 @@ class TaskController {
 
             res.json({
                 status: 'success',
-                data: tasks,
+                data: tasks.reverse(),
             });
         } catch (error) {
             res.json({
