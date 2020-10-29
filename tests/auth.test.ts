@@ -55,7 +55,7 @@ describe('Registration', () => {
         const response = await request
             .post('/auth/register')
             .send(registerData);
-        expect(response.status).toBe(400);
+        expect(response.status).toBe(403);
         expect(response.body.status).toBe('error');
         expect(response.body.message).toBe('User has already registered');
     });

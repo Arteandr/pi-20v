@@ -71,7 +71,7 @@ class UserController {
             let user = await UserModel.findOne({ username: data.username });
 
             if (user) {
-                res.status(400).json({
+                res.status(403).json({
                     status: 'error',
                     message: 'User has already registered',
                 });
