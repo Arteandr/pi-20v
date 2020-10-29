@@ -68,7 +68,17 @@ class UserController {
                 ...req.body,
             };
 
-            const user = await UserModel.create(data);
+            let user = await UserModel.findOne({ username: data.username });
+
+            if (user) {
+                res.status(400).json({
+                    status: 'error',
+                    message: 'User has already registered',
+                });
+                return;
+            }
+
+            user = await UserModel.create(data);
 
             res.json({
                 status: 'success',

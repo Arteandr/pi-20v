@@ -51,6 +51,14 @@ describe('Registration', () => {
         expect(response.status).toBe(200);
         expect(response.body.status).toBe('success');
     });
+    test('User can`n register if already registered', async () => {
+        const response = await request
+            .post('/auth/register')
+            .send(registerData);
+        expect(response.status).toBe(400);
+        expect(response.body.status).toBe('error');
+        expect(response.body.message).toBe('User has already registered');
+    });
     test('User can`n register with incorrect data', async () => {
         const response = await request.post('/auth/register').send({});
         expect(response.status).toBe(400);
