@@ -1,19 +1,19 @@
-import {model, Schema, Document} from 'mongoose';
+import { model, Schema, Document } from 'mongoose';
 
 export interface ITaskModel {
-    _id?: string,
-    user: string,
-    subject: string,
-    text: string,
-    startDate: string,
-    endDate: string,
-    subgroup?: number,
-};
+    _id?: string;
+    user: string;
+    subject: string;
+    text: string;
+    startDate: string;
+    endDate: string;
+    subgroup?: number;
+}
 
 export type ITaskModelDocument = ITaskModel & Document;
 
 const TaskSchema = new Schema<ITaskModel>({
-    user:{
+    user: {
         required: true,
         ref: 'User',
         type: Schema.Types.ObjectId,
@@ -28,7 +28,7 @@ const TaskSchema = new Schema<ITaskModel>({
     },
     startDate: {
         required: true,
-        type: String
+        type: String,
     },
     endDate: {
         required: true,
@@ -37,7 +37,7 @@ const TaskSchema = new Schema<ITaskModel>({
     subgroup: {
         required: false,
         type: Number,
-    }
+    },
 });
 
-export const TaskModel = model<ITaskModelDocument>('Task',TaskSchema);
+export const TaskModel = model<ITaskModelDocument>('Task', TaskSchema);
