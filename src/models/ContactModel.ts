@@ -25,10 +25,6 @@ const ContactSchema = new Schema<IContactModel>({
         required: true,
         type: String,
     },
-    number: {
-        required: false,
-        type: String,
-    },
     email: {
         required: false,
         type: String,
@@ -36,6 +32,10 @@ const ContactSchema = new Schema<IContactModel>({
     subjects: {
         required: true,
         type: String
+    },
+    telephone: {
+        required: false,
+        type: String,
     }
 });
 
