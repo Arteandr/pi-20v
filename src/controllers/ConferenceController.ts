@@ -1,11 +1,15 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
+import { ConferenceModel, IConference } from '../models/ConferenceModel';
 import { ContactModel, IContactModel } from '../models/ContactModel';
-class ContactController {
-    /* Get all Contact */
+class ConferenceController {
+    /* Get all conferences */
     async index(_: any, res: express.Response): Promise<void> {
         try {
-            const contacts = await ContactModel.find({}).exec();
+            const contacts = await ConferenceModel.find({})
+                .populate('subject')
+                .populate('teacher')
+                .exec();
 
             res.json({
                 status: 'success',
@@ -19,7 +23,7 @@ class ContactController {
         }
     }
 
-    /* Create new contacts */
+    /* Create new conference */
     async create(req: express.Request, res: express.Response): Promise<void> {
         try {
             const user = req.user as IContactModel;
@@ -35,11 +39,15 @@ class ContactController {
                     return;
                 }
 
-                const data: IContactModel = {
+                const data: IConference = {
                     ...req.body,
                 };
 
-                const task = await ContactModel.create(data);
+                let task = await ConferenceModel.create(data);
+                task = await task
+                    .populate('subject')
+                    .populate('teacher')
+                    .execPopulate();
 
                 res.json({
                     status: 'success',
@@ -55,4 +63,4 @@ class ContactController {
     }
 }
 
-export const ContactCtrl = new ContactController();
+export const ConferenceCtrl = new ConferenceController();

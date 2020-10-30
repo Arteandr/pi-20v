@@ -1,16 +1,15 @@
-import {model, Schema, Document} from 'mongoose';
+import { model, Schema, Document } from 'mongoose';
 
-export interface IContactModel {
-    _id?: string;
+export interface IContact {
     firstName: string;
     lastName: string;
     patronymic: string;
     telephone?: string;
     email?: string;
-    subjects: string;
-};
+    subjects?: [string?];
+}
 
-export type IContactModelDocument = IContactModel & Document;
+export interface IContactModel extends IContact, Document {}
 
 const ContactSchema = new Schema<IContactModel>({
     firstName: {
@@ -29,14 +28,16 @@ const ContactSchema = new Schema<IContactModel>({
         required: false,
         type: String,
     },
-    subjects: {
-        required: true,
-        type: String
-    },
     telephone: {
         required: false,
         type: String,
-    }
+    },
 });
 
-export const ContactModel = model<IContactModelDocument>('Contact',ContactSchema);
+ContactSchema.virtual('subjects', {
+    ref: 'Subject',
+    localField: '_id',
+    foreignField: 'teachers',
+});
+
+export const ContactModel = model<IContactModel>('Contact', ContactSchema);

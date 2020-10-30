@@ -1,11 +1,16 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
+import { ISubject, SubjectModel } from '../models/SubjectModel';
+import { IUserModel } from '../models/UserModel';
 import { ContactModel, IContactModel } from '../models/ContactModel';
-class ContactController {
-    /* Get all Contact */
+
+class SubjectController {
+    /* Get all subjects */
     async index(_: any, res: express.Response): Promise<void> {
         try {
-            const contacts = await ContactModel.find({}).exec();
+            const contacts = await SubjectModel.find({})
+                .populate('teachers')
+                .exec();
 
             res.json({
                 status: 'success',
@@ -19,10 +24,10 @@ class ContactController {
         }
     }
 
-    /* Create new contacts */
+    /* Create new subject */
     async create(req: express.Request, res: express.Response): Promise<void> {
         try {
-            const user = req.user as IContactModel;
+            const user = req.user as IUserModel;
 
             if (user?._id) {
                 const errors = validationResult(req);
@@ -35,15 +40,15 @@ class ContactController {
                     return;
                 }
 
-                const data: IContactModel = {
+                const data: ISubject = {
                     ...req.body,
                 };
 
-                const task = await ContactModel.create(data);
+                const subject = await SubjectModel.create(data);
 
                 res.json({
                     status: 'success',
-                    data: task,
+                    data: subject,
                 });
             }
         } catch (error) {
@@ -55,4 +60,4 @@ class ContactController {
     }
 }
 
-export const ContactCtrl = new ContactController();
+export const SubjectCtrl = new SubjectController();
