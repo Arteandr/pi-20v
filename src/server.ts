@@ -23,6 +23,8 @@ import { ConferenceCtrl } from './controllers/ConferenceController'; // Subject 
 import { registerValidations } from './validations/register';
 import { createTaskValidations } from './validations/createTask';
 import { createContactValidations } from './validations/createContact';
+import { createSubjectValidations } from './validations/createSubject';
+import { createConferenceValidations } from './validations/createConference';
 
 const app: Application = express(); // Create app instance
 
@@ -68,10 +70,20 @@ app.post(
     ContactCtrl.create
 );
 
-app.post('/subjects', passport.authenticate('jwt'), SubjectCtrl.create);
+app.post(
+    '/subjects',
+    passport.authenticate('jwt'),
+    createSubjectValidations,
+    SubjectCtrl.create
+);
 app.get('/subjects', SubjectCtrl.index);
 
-app.post('/conferences', passport.authenticate('jwt'), ConferenceCtrl.create);
+app.post(
+    '/conferences',
+    passport.authenticate('jwt'),
+    createConferenceValidations,
+    ConferenceCtrl.create
+);
 app.get('/conferences', ConferenceCtrl.index);
 /** SERVER START */
 const start = async () => {
