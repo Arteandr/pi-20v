@@ -1,9 +1,10 @@
 import { model, Schema, Document } from 'mongoose';
+import { ISubjectModel } from './SubjectModel';
 
 export interface ITaskModel {
     _id?: string;
     user: string;
-    subject: string;
+    subject: ISubjectModel;
     text: string;
     startDate: string;
     endDate: string;
@@ -20,7 +21,8 @@ const TaskSchema = new Schema<ITaskModel>({
     },
     subject: {
         required: true,
-        type: String,
+        ref: 'Subject',
+        type: Schema.Types.ObjectId,
     },
     text: {
         required: true,

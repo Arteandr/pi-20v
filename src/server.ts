@@ -6,7 +6,7 @@ import express, { Application } from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
 /** CORS */
-import cors from 'cors'
+import cors from 'cors';
 /** DATABASE(DB) */
 import initDB from './core/db';
 /** Auth */
@@ -16,18 +16,22 @@ import { passport } from './core/passport';
 import { UserCtrl } from './controllers/UserController'; // User Controller
 import { TaskCtrl } from './controllers/TaskController'; // Task Controller
 import { ContactCtrl } from './controllers/ContactController'; // Contact Controller
+import { SubjectCtrl } from './controllers/SubjectController'; // Subject Controller
+import { ConferenceCtrl } from './controllers/ConferenceController'; // Subject Controller
 
 /**---------------------------------VALIDATIONS---------------------------------*/
 import { registerValidations } from './validations/register';
 import { createTaskValidations } from './validations/createTask';
-import { createContactValidations } from './validations/createContact'
+import { createContactValidations } from './validations/createContact';
+import { createSubjectValidations } from './validations/createSubject';
+import { createConferenceValidations } from './validations/createConference';
 
 const app: Application = express(); // Create app instance
 
 /**---------------------------------MIDDLEWARES---------------------------------*/
 app.use(express.json()); // json body parser
 app.use(passport.initialize()); // auth initialize
-app.use(cors()) // use cors 
+app.use(cors()); // use cors
 
 /*---------------------------------ROUTES---------------------------------*/
 /** Users */
@@ -63,8 +67,24 @@ app.post(
     '/contacts',
     passport.authenticate('jwt'),
     createContactValidations,
-    ContactCtrl.create 
-    );
+    ContactCtrl.create
+);
+
+app.post(
+    '/subjects',
+    passport.authenticate('jwt'),
+    createSubjectValidations,
+    SubjectCtrl.create
+);
+app.get('/subjects', SubjectCtrl.index);
+
+app.post(
+    '/conferences',
+    passport.authenticate('jwt'),
+    createConferenceValidations,
+    ConferenceCtrl.create
+);
+app.get('/conferences', ConferenceCtrl.index);
 /** SERVER START */
 const start = async () => {
     try {
