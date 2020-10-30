@@ -6,7 +6,9 @@ class ContactController {
     /* Get all Contact */
     async index(_: any, res: express.Response): Promise<void> {
         try {
-            const contacts = await ContactModel.find({}).exec();
+            const contacts = await ContactModel.find({})
+                .populate('subjects')
+                .exec();
 
             res.json({
                 status: 'success',
@@ -40,11 +42,11 @@ class ContactController {
                     ...req.body,
                 };
 
-                const task = await ContactModel.create(data);
+                const contact = await ContactModel.create(data);
 
                 res.json({
                     status: 'success',
-                    data: task,
+                    data: contact,
                 });
             }
         } catch (error) {
