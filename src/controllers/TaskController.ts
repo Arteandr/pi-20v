@@ -8,7 +8,7 @@ class TaskController {
     /* Get all tasks */
     async index(_: any, res: express.Response): Promise<void> {
         try {
-            const tasks = await TaskModel.find({}).populate('user').exec();
+            const tasks = await TaskModel.find({}).populate('user').populate('subject').exec();
 
             res.json({
                 status: 'success',
