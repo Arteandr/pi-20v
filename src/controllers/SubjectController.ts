@@ -2,7 +2,6 @@ import express from 'express';
 import { validationResult } from 'express-validator';
 import { ISubject, SubjectModel } from '../models/SubjectModel';
 import { IUserModel } from '../models/UserModel';
-import { ContactModel, IContactModel } from '../models/ContactModel';
 
 class SubjectController {
     /* Get all subjects */
