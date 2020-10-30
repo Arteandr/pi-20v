@@ -11,40 +11,41 @@ export interface IContact {
 
 export interface IContactModel extends IContact, Document {}
 
-const ContactSchema = new Schema<IContactModel>(
-    {
-        firstName: {
-            required: true,
-            type: String,
-        },
-        lastName: {
-            required: true,
-            type: String,
-        },
-        patronymic: {
-            required: true,
-            type: String,
-        },
-        email: {
-            required: false,
-            type: String,
-        },
-        telephone: {
-            required: false,
-            type: String,
-        },
+const ContactSchema = new Schema<IContactModel>({
+    firstName: {
+        required: true,
+        type: String,
     },
-    {
-        toJSON: {
-            virtuals: true,
-        },
-    }
-);
+    lastName: {
+        required: true,
+        type: String,
+    },
+    patronymic: {
+        required: true,
+        type: String,
+    },
+    email: {
+        required: false,
+        type: String,
+    },
+    telephone: {
+        required: false,
+        type: String,
+    },
+});
 
 ContactSchema.virtual('subjects', {
     ref: 'Subject',
     localField: '_id',
     foreignField: 'teachers',
+});
+
+ContactSchema.set('toJSON', {
+    virtuals: true,
+    transform: (_, obj) => {
+        delete obj.id;
+        return obj;
+    },
 });
 
 export const ContactModel = model<IContactModel>('Contact', ContactSchema);
