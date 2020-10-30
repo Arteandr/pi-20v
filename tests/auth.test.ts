@@ -1,28 +1,18 @@
 import mongoose from 'mongoose';
 import supertest from 'supertest';
 import { app } from '../src/server';
+import connectToDB from './helpers/connectToDB';
+
+import { createUser } from './helpers/create';
 
 const request = supertest(app);
 
 beforeAll(async () => {
-    await mongoose.connect(
-        process.env.MONGO_URL,
-        {
-            useNewUrlParser: true,
-            useCreateIndex: true,
-            useUnifiedTopology: true,
-            useFindAndModify: false,
-        },
-        (err) => {
-            if (err) {
-                console.error(err);
-                process.exit(1);
-            }
-        }
-    );
+    await connectToDB();
 });
 
 afterAll(async () => {
+    await mongoose.connection.db.dropDatabase();
     mongoose.connection.close();
 });
 
