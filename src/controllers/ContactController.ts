@@ -1,5 +1,6 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
+import { IUserModel } from '../models/UserModel';
 import { ContactModel, IContactModel } from '../models/ContactModel';
 class ContactController {
     /* Get all Contact */
@@ -22,7 +23,7 @@ class ContactController {
     /* Create new contacts */
     async create(req: express.Request, res: express.Response): Promise<void> {
         try {
-            const user = req.user as IContactModel;
+            const user = req.user as IUserModel;
 
             if (user?._id) {
                 const errors = validationResult(req);

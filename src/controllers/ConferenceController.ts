@@ -1,5 +1,6 @@
 import express from 'express';
 import { validationResult } from 'express-validator';
+import { IUserModel } from '../models/UserModel';
 import { ConferenceModel, IConference } from '../models/ConferenceModel';
 import { ContactModel, IContactModel } from '../models/ContactModel';
 class ConferenceController {
@@ -26,7 +27,7 @@ class ConferenceController {
     /* Create new conference */
     async create(req: express.Request, res: express.Response): Promise<void> {
         try {
-            const user = req.user as IContactModel;
+            const user = req.user as IUserModel;
 
             if (user?._id) {
                 const errors = validationResult(req);

@@ -3,7 +3,7 @@ import { IContactModel } from './ContactModel';
 
 export interface ISubject {
     name: string;
-    teachers: [IContactModel];
+    teachers: IContactModel[];
 }
 
 export interface ISubjectModel extends ISubject, Document {}

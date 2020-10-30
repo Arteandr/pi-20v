@@ -6,7 +6,7 @@ export interface IContact {
     patronymic: string;
     telephone?: string;
     email?: string;
-    subjects?: [string?];
+    subjects?: string[];
 }
 
 export interface IContactModel extends IContact, Document {}
