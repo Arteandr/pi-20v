@@ -10,6 +10,7 @@ passport.use(
 
             if (!user) {
                 done(null, false);
+                return;
             }
 
             const isCorrect = await user.comparePassword(password);
