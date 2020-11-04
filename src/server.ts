@@ -12,19 +12,12 @@ import initDB from './core/db';
 /** Auth */
 import { passport } from './core/passport';
 
-/**---------------------------------CONTROLLERS---------------------------------*/
-import { UserCtrl } from './controllers/UserController'; // User Controller
-import { TaskCtrl } from './controllers/TaskController'; // Task Controller
-import { ContactCtrl } from './controllers/ContactController'; // Contact Controller
-import { SubjectCtrl } from './controllers/SubjectController'; // Subject Controller
-import { ConferenceCtrl } from './controllers/ConferenceController'; // Subject Controller
-
-/**---------------------------------VALIDATIONS---------------------------------*/
-import { registerValidations } from './validations/register';
-import { createTaskValidations } from './validations/createTask';
-import { createContactValidations } from './validations/createContact';
-import { createSubjectValidations } from './validations/createSubject';
-import { createConferenceValidations } from './validations/createConference';
+import users from './routes/users';
+import auth from './routes/auth';
+import tasks from './routes/tasks';
+import contacts from './routes/contacts';
+import subjects from './routes/subjects';
+import conferences from './routes/conferences';
 
 const app: Application = express(); // Create app instance
 
@@ -35,56 +28,13 @@ app.use(cors()); // use cors
 
 /*---------------------------------ROUTES---------------------------------*/
 /** Users */
-app.get('/users', UserCtrl.index); // Get all users
-app.get(
-    '/users/me',
-    passport.authenticate('jwt', { session: false }),
-    UserCtrl.getUserInfo
-); // Get current user
-app.get('/users/:id', UserCtrl.show); //  Get user by id
-/** Auth */
-app.post('/auth/register', registerValidations, UserCtrl.create); // SignUp
-app.post('/auth/login', passport.authenticate('local'), UserCtrl.afterLogin); // SignIn
-/** Task */
-app.get('/tasks', TaskCtrl.index); // Get all tasks
-app.get('/tasks/:id', TaskCtrl.show); // Get task by id
-app.delete('/tasks/:id', passport.authenticate('jwt'), TaskCtrl.delete); // Delete task by id
-app.patch(
-    '/tasks/:id',
-    passport.authenticate('jwt'),
-    createTaskValidations,
-    TaskCtrl.update
-); // Update task by id
-app.post(
-    '/tasks',
-    passport.authenticate('jwt'),
-    createTaskValidations,
-    TaskCtrl.create
-); // Create new task
-/** Contacts */
-app.get('/contacts', ContactCtrl.index);
-app.post(
-    '/contacts',
-    passport.authenticate('jwt'),
-    createContactValidations,
-    ContactCtrl.create
-);
+app.use('/users', users);
+app.use('/auth', auth);
+app.use('/tasks', tasks);
+app.use('/contacts', contacts);
+app.use('/subjects', subjects);
+app.use('/conferences', conferences);
 
-app.post(
-    '/subjects',
-    passport.authenticate('jwt'),
-    createSubjectValidations,
-    SubjectCtrl.create
-);
-app.get('/subjects', SubjectCtrl.index);
-
-app.post(
-    '/conferences',
-    passport.authenticate('jwt'),
-    createConferenceValidations,
-    ConferenceCtrl.create
-);
-app.get('/conferences', ConferenceCtrl.index);
 /** SERVER START */
 const start = async () => {
     try {
